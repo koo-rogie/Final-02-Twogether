@@ -2,11 +2,10 @@ import { Metadata } from 'next';
 import { Judson } from 'next/font/google'; // 구글 폰트 사용
 
 import EventSlider from '@/app/eventSlider';
-import Button from '@/components/common/Button';
-import ProductCard from '@/components/product/ProductCard';
 
 import Image from 'next/image';
-import Link from 'next/link';
+import ProductMainPage from '@/app/ProductMainPage';
+import LinkButton from '@/components/common/LinkButton';
 
 const JudsonFont = Judson({
   subsets: ['latin'],
@@ -50,12 +49,13 @@ export default function Home() {
             <div className="absolute right-[2.625rem] top-1/2 -translate-y-1/2 text-white">
               <p className={`${JudsonFont.className} text-2xl font-bold`}>Twogether</p>
               <p className={`${JudsonFont.className} text-2xl mb-4`}>The Last Episode</p>
-              <Link href="/shop/best">
-                <Button lang="eng">GO BEST</Button>
-              </Link>
+              <LinkButton href="/shop/best">GO BEST</LinkButton>
             </div>
           </div>
-          <ProductCard />
+
+          <ul className="grid grid-cols-2 gap-4 my-6">
+            <ProductMainPage category="best" />
+          </ul>
         </section>
         {/* 배스트 섹션 종로 */}
 
@@ -75,12 +75,13 @@ export default function Home() {
             <div className="absolute left-[2.625rem] top-1/2 -translate-y-1/2 text-white">
               <p className={`${JudsonFont.className} text-2xl font-bold`}>Twogether</p>
               <p className={`${JudsonFont.className} text-2xl mb-4`}>The Last Episode</p>
-              <Link href="/shop/sale">
-                <Button lang="eng">TO SALE</Button>
-              </Link>
+              <LinkButton href="/shop/sale">TO SALE</LinkButton>
             </div>
           </div>
-          <ProductCard />
+
+          <ul className="grid grid-cols-2 gap-4 my-6">
+            <ProductMainPage category="sale" />
+          </ul>
         </section>
         {/* 세일 섹션 종료 */}
 
