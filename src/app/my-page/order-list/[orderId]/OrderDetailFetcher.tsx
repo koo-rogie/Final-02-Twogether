@@ -24,10 +24,7 @@ export default function OrderDetailFetcher({ orderId }: OrderDetailFetcherProps)
       try {
         const parsed = JSON.parse(userLocalStorage);
         accessToken = parsed?.state?.user?.token?.accessToken;
-        console.log('액세스 토큰 :', accessToken);
-      } catch (err) {
-        console.error('액세스 토큰 파싱 실패', err);
-      }
+      } catch (err) {}
     }
 
     async function fetchOrder(orderId: number) {
@@ -35,14 +32,11 @@ export default function OrderDetailFetcher({ orderId }: OrderDetailFetcherProps)
 
       try {
         const res = await getOrder(accessToken, orderId);
-        console.log('주문 내역 데이터 :', res);
 
         if (res.ok && res.item) {
           setOrder(res.item);
         }
-      } catch (err) {
-        console.error('주문 내역 API 호출 실패', err);
-      }
+      } catch (err) {}
     }
 
     fetchOrder(orderId);
@@ -101,11 +95,11 @@ export default function OrderDetailFetcher({ orderId }: OrderDetailFetcherProps)
           <div>
             <div className="flex justify-between mb-2">
               <span>총 할인 금액</span>
-              <span>{discount.toLocaleString()}원</span>
+              <span>{((order?.cost.products ?? 0) - discount).toLocaleString()}원</span>
             </div>
             <div className="flex justify-between text-gray-350 text-sm">
               <span>- 기간할인</span>
-              <span>{discount.toLocaleString()}원</span>
+              <span>{((order?.cost.products ?? 0) - discount).toLocaleString()}원</span>
             </div>
           </div>
         </div>

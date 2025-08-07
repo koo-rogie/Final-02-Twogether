@@ -41,7 +41,7 @@ function ProductItem({ item, withLink = false }: { item: ProductItemProps; withL
                 <s>
                   <span className="text-gray-350">{item.price.toLocaleString()}원</span>
                 </s>
-                <span className="ml-1 text-error">{(item.price - item.extra.salePrice).toLocaleString()}원</span>
+                <span className="ml-1 text-error">{item.extra.salePrice.toLocaleString()}원</span>
               </p>
             ) : (
               <span>{item.price.toLocaleString()}원</span>
