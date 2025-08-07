@@ -47,11 +47,25 @@ export default function OrderDetailFetcher({ orderId }: OrderDetailFetcherProps)
     let totalDiscount = 0;
     order?.products.map((item) => {
       if (item.extra.isSale) {
-        totalDiscount += item.extra.salePrice || 0;
+        totalDiscount += (item.extra.salePrice ?? 0) * item.quantity || 0;
       }
     });
     setDiscount(totalDiscount);
   }, [order]);
+
+  const totalPrice =
+    order?.products?.reduce((sum, item) => {
+      return sum + item.price;
+    }, 0) ?? 0;
+
+  const totalSalePrice =
+    order?.products?.reduce((sum, item) => {
+      const sale = item.extra.salePrice ?? item.price; // 할인 가격이 없으면 원가 사용
+      return sum + sale * item.quantity;
+    }, 0) ?? 0;
+
+  const totalDiscount = totalPrice - totalSalePrice;
+  const shippingFee = totalPrice - totalDiscount > 50000 ? 0 : 3000;
 
   return (
     <div className="flex flex-col gap-4 mb-20">
@@ -72,7 +86,7 @@ export default function OrderDetailFetcher({ orderId }: OrderDetailFetcherProps)
       </section>
       <section>
         <p className="mb-4">
-          주문 상품 <span>{order?.products.length}</span>개
+          주문 상품 <span>{order?.products.length}</span>종
         </p>
         <div className="flex flex-col gap-4 p-5 rounded-lg border-[.0625rem] border-gray-150 text-sm">
           {order?.products.map((item) => (
@@ -86,27 +100,27 @@ export default function OrderDetailFetcher({ orderId }: OrderDetailFetcherProps)
         <div className="flex flex-col gap-4 py-4 border-b-[.0625rem] border-gray-150">
           <div className="flex justify-between">
             <span>총 상품 금액</span>
-            <span>{order?.cost.products.toLocaleString()}원</span>
+            <span>{totalPrice.toLocaleString()}원</span>
           </div>
           <div className="flex justify-between">
             <span>총 배송비</span>
-            <span>{order?.cost.shippingFees.toLocaleString()}원</span>
+            <span>{shippingFee.toLocaleString()}원</span>
           </div>
           <div>
             <div className="flex justify-between mb-2">
               <span>총 할인 금액</span>
-              <span>{((order?.cost.products ?? 0) - discount).toLocaleString()}원</span>
+              <span>{totalDiscount.toLocaleString()}원</span>
             </div>
             <div className="flex justify-between text-gray-350 text-sm">
               <span>- 기간할인</span>
-              <span>{((order?.cost.products ?? 0) - discount).toLocaleString()}원</span>
+              <span>{totalDiscount.toLocaleString()}원</span>
             </div>
           </div>
         </div>
       </section>
       <div className="flex justify-between mb-5">
         <span>결제 금액</span>
-        <span>{order?.cost.total && (order.cost.total - discount).toLocaleString()}원</span>
+        <span>{(totalPrice - totalDiscount + shippingFee).toLocaleString()}원</span>
       </div>
       <LinkButton href="/my-page/order-list" size="lg">
         뒤로 가기
