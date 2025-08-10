@@ -8,7 +8,6 @@ export interface ProductItemProps {
   };
   name: string;
   price: number;
-  quantity: number;
   extra: {
     isSale?: boolean;
     salePrice?: number;
@@ -40,17 +39,13 @@ function ProductItem({ item, withLink = false }: { item: ProductItemProps; withL
             {item.extra.isSale && item.extra.salePrice ? (
               <p>
                 <s>
-                  <span className="text-gray-350">{(item.price / item.quantity).toLocaleString()}원</span>
+                  <span className="text-gray-350">{item.price.toLocaleString()}원</span>
                 </s>
-                <span className="ml-1 text-error">{item.extra.salePrice.toLocaleString()}원</span>
+                <span className="ml-1 text-error">{(item.price - item.extra.salePrice).toLocaleString()}원</span>
               </p>
             ) : (
               <span>{item.price.toLocaleString()}원</span>
             )}
-          </div>
-          <div>
-            <span className="mr-2">상품 개수</span>
-            <span>{item.quantity}개</span>
           </div>
         </div>
       </div>

@@ -52,7 +52,6 @@ function ReviewItem({ setRefreshKey, showProductInfo = false, review }: ReviewIt
       if (data.ok) {
         setProductData({
           _id: data.item._id,
-          quantity: data.item.quantity,
           image: { path: data.item.mainImages[0].path },
           name: data.item.name,
           price: data.item.price,

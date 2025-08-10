@@ -30,7 +30,6 @@ async function ReviewPost({ params }: { params: Promise<{ orderId: string; produ
   if (data.ok) {
     item = {
       _id: data.item._id,
-      quantity: data.item.quantity,
       image: { path: data.item.mainImages[0].path },
       name: data.item.name,
       price: data.item.price,
